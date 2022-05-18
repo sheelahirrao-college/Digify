@@ -3,6 +3,10 @@ import web3 from './web3';
 import ipfs from './ipfs';
 import storehash from './storehash';
 import { Button } from 'reactstrap';
+import { Tabs, Tab, Col, Nav, Row } from 'react-bootstrap';
+import './styles.css';
+import ParticlesBg from 'particles-bg'
+
 
 class App extends Component {
 
@@ -201,135 +205,175 @@ onSubmit = async (event) => {
   };
 
 render() {
+  return (
+          <div className="App">
+            {/* <ParticlesBg type="cobweb" bg={true} /> */}
+            <header className="App-header">
+                  <h1 className="project_title">Digify</h1>
+                  {/* <h3 className="project_subtitle">Blockchain Based Certification</h3> */}
+            </header> 
+            <center>
+              <Tab.Container id="left-tabs-example" defaultActiveKey="first">
+                <Row>
+                  <Col sm={6}>
+                    <Nav variant="pills" className="flex-column">
+                      <Nav.Item>
+                        <Nav.Link eventKey="first">Account</Nav.Link>
+                      </Nav.Item>
+                      <Nav.Item>
+                        <Nav.Link eventKey="second">Send File</Nav.Link>
+                      </Nav.Item>
+                      <Nav.Item>
+                        <Nav.Link eventKey="third">My Issued Certificates</Nav.Link>
+                      </Nav.Item>
+                      <Nav.Item>
+                        <Nav.Link eventKey="fourth">Certificates Issued To Me</Nav.Link>
+                      </Nav.Item>
+                      <Nav.Item>
+                        <Nav.Link eventKey="fifth">Verify Certificate</Nav.Link>
+                      </Nav.Item>
+                      <Nav.Item>
+                        <Nav.Link eventKey="sixth">Search Certificate</Nav.Link>
+                      </Nav.Item>
+                    </Nav>
+                  </Col>
+                  <Col sm={6}>
+                    <Tab.Content>
+                      <Tab.Pane eventKey="first">
+                        <div>
+                          <hr/>
+                          <h1>Your Account:</h1> 
+                          <h4>{this.state.my_acc}</h4> 
+                          <Button onClick = {this.show_acc}> Show Account </Button>
+                        </div>
+                      </Tab.Pane>
+                      <Tab.Pane eventKey="second">
+                        <grid>
+                          <hr/>
+                          <h3> Choose file to send to IPFS </h3>
+                            <form onSubmit={this.onSubmit}>
+                              <label>Recipient address:
+                                <input
+                                  type = "text" id="add_rec" onChange = {this.recipientChange}
+                                />
+                              </label>
+                              <br></br>
+                              <input
+                                type = "file"
+                                onChange = {this.captureFile}
+                              />
+                              <Button
+                                bsStyle="primary"
+                                type="submit">
+                                Send it
+                              </Button>
+                            </form>
+                            <hr/>
+                            <table bordered responsive>
+                              <thead>
+                                <tr>
+                                  <th>Tx Receipt Category</th>
+                                  <th> </th>
+                                  <th>Values</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td>IPFS Hash stored on Ethereum</td>
+                                  <td> : </td>
+                                  <td>{this.state.ipfsHash}</td>
+                                </tr>
+                                <tr>
+                                  <td>Ethereum Contract Address</td>
+                                  <td> : </td>
+                                  <td>{this.state.ethAddress}</td>
+                                </tr>
+                                <tr>
+                                  <td>Tx # </td>
+                                  <td> : </td>
+                                  <td>{this.state.transactionHash}</td>
+                                </tr>
+                              </tbody>
+                          </table>
+                        </grid>
+                      </Tab.Pane>
+                      <Tab.Pane eventKey="third">
+                        <div>
+                          <hr/>
+                          <h1>My Issued certificates: </h1>
+                          <br/>
+                          <p id="accountAddress"></p><br/>
+                            <Button onClick = {this.show_cert_3}> Show Certificate </Button>
+                            <table ref="cert_table_2">
+                            </table>     
+                        </div>
+                      </Tab.Pane>
+                      <Tab.Pane eventKey="fourth">
+                        <div>
+                          <hr/>
+                          <h1>Certificates issued to me: </h1>
+                          <br/>
+                          <p id="accountAddress"></p><br/>
+                            <Button onClick = {this.show_cert_2}> Show Certificate </Button>
+                            <table ref="cert_table_1">
+                            </table>
+                        </div>
+                      </Tab.Pane>
+                      <Tab.Pane eventKey="fifth">
+                        <div>
+                          <hr/>
+                          <h3> Verify Certificate</h3>
+                          <h4>Search By Certificate Hash :</h4>
+                          <form onSubmit={this.onVerify}>
+                            <label>Enter Certificate hash:
+                              <input
+                                type = "text" id="input" onChange = {this.hashChange}
+                              />
+                            </label>
+                            <br></br>
+                            <Button
+                              bsStyle="primary"
+                              type="submit">
+                              Verify it
+                            </Button>
+                          </form>
+                          <p ref="ll"></p>
 
-return (
-        <div>
-        <div className="App">
-          <header className="App-header">
-            <h1>Team_101 Blockchain Project</h1>
-            <h3>Certificate Verification</h3>
-          </header>
-
-<hr/>
-        <div>
-         <p>Your Account: {this.state.my_acc}</p> 
-        <Button onClick = {this.show_acc}> Show Account </Button>
+                          <p>Issuer Address - {this.state.str1}</p>
+                          <br/>
+                          <p>Recipient Address - {this.state.str2}</p>
+                            <br/>
+                        </div>
+                      </Tab.Pane>
+                      <Tab.Pane eventKey="sixth">
+                        <hr/>
+                        <h4>Search By Certificate :</h4>
+                        <form onSubmit={this.getHash}>
+                          <br></br>
+                          <input
+                            type = "file"
+                            onChange = {this.captureFile2}
+                          />
+                          <br/><br/>
+                          <Button
+                            bsStyle="primary"
+                            type="submit">
+                            Verify it
+                          </Button>
+                        </form>
+                        <p ref="ll2"></p>
+                        <p>Issuer Address - {this.state.str3}</p>
+                        <br/>
+                        <p>Recipient Address - {this.state.str4}</p>
+                      </Tab.Pane>
+                    </Tab.Content>
+                  </Col>
+                </Row>
+              </Tab.Container>
+              </center>
         </div>
-<hr/>
-<grid>
-          <h3> Choose file to send to IPFS </h3>
-          <form onSubmit={this.onSubmit}>
-          <label>recipient address:
-            <input
-              type = "text" id="add_rec" onChange = {this.recipientChange}
-            />
-            </label>
-            <br></br>
-            <input
-              type = "file"
-              onChange = {this.captureFile}
-            />
-             <Button
-             bsStyle="primary"
-             type="submit">
-             Send it
-             </Button>
-          </form>
-<hr/>
-  <table bordered responsive>
-                <thead>
-                  <tr>
-                    <th>Tx Receipt Category</th>
-                    <th> </th>
-                    <th>Values</th>
-                  </tr>
-                </thead>
-
-<tbody>
-                  <tr>
-                    <td>IPFS Hash stored on Ethereum</td>
-                    <td> : </td>
-                    <td>{this.state.ipfsHash}</td>
-                  </tr>
-                  <tr>
-                    <td>Ethereum Contract Address</td>
-                    <td> : </td>
-                    <td>{this.state.ethAddress}</td>
-                  </tr>
-                  <tr>
-                    <td>Tx # </td>
-                    <td> : </td>
-                    <td>{this.state.transactionHash}</td>
-                  </tr>
-                </tbody>
-            </table>
-        </grid>
-        <br/>
-        <div>
-          <hr/>
-          <h1>My Issued certificates: </h1>
-          <br/>
-          <p id="accountAddress"></p><br/>
-             <Button onClick = {this.show_cert_3}> Show Certificate </Button>
-             <table ref="cert_table_2">
-             </table>
-             
-      </div>
-     </div>
-      <div>
-          <hr/>
-          <h1>Certificates issued to me: </h1>
-          <br/>
-          <p id="accountAddress"></p><br/>
-             <Button onClick = {this.show_cert_2}> Show Certificate </Button>
-             <table ref="cert_table_1">
-             </table>
-             
-      </div>
-      <div>
-          <hr/>
-          <h3> Verify Certificate</h3>
-            <h4>Search By Certificate Hash :</h4>
-          <form onSubmit={this.onVerify}>
-          <label>Enter Certificate hash:
-            <input
-              type = "text" id="input" onChange = {this.hashChange}
-            />
-            </label>
-            <br></br>
-            <Button
-            bsStyle="primary"
-             type="submit">
-             Verify it
-             </Button>
-          </form>
-          <p ref="ll"></p>
-
-          <p>Issuer Address - {this.state.str1}</p>
-          <br/>
-          <p>Recipient Address - {this.state.str2}</p>
-            <br/>
-            <h4>Search By Certificate :</h4>
-          <form onSubmit={this.getHash}>
-            <br></br>
-            <input
-              type = "file"
-              onChange = {this.captureFile2}
-            />
-            <br/><br/>
-             <Button
-             bsStyle="primary"
-             type="submit">
-             Verify it
-             </Button>
-            </form>
-          <p ref="ll2"></p>
-          <p>Issuer Address - {this.state.str3}</p>
-          <br/>
-          <p>Recipient Address - {this.state.str4}</p>
-      </div>
-    </div>
       );
     }
 }
+
 export default App;
